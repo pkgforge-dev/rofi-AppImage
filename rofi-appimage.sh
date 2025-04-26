@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -euX
+set -eux
 
 APP=rofi
 export ARCH="$(uname -m)"
