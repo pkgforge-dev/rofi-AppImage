@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -euX
 
 APP=rofi
 export ARCH="$(uname -m)"
@@ -93,9 +93,7 @@ cd ..
 wget -q "$APPIMAGETOOL" -O ./appimagetool
 chmod +x ./appimagetool
 echo "Generating AppImage..."
-./appimagetool --comp zstd \
-	--mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
-	-n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$APP"-"$VERSION"-anylinux-"$ARCH".AppImage
+./appimagetool -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$APP"-"$VERSION"-anylinux-"$ARCH".AppImage
 
 mv ./*.AppImage* ../
 cd ..
