@@ -18,11 +18,36 @@ jobs:
     - name: build
       if: always()
       run: |
-        apk add coreutils bash wget git build-base meson glib-dev cairo-dev  \
-          pango-dev libxkbcommon-dev libxcb-dev gdk-pixbuf-dev xcb-util-dev \
-          xcb-util-wm-dev xcb-util-xrm-dev xcb-util-cursor-dev librsvg-dev \
-          startup-notification-dev flex bison ronn cppcheck check-dev \
-          xkeyboard-config-dev xcb-util-keysyms-dev patchelf strace
+        apk add bash \
+          bash \
+          bison \
+          build-base \
+          cairo-dev \
+          check-dev \
+          coreutils \
+          cppcheck \
+          flex \
+          gdk-pixbuf-dev \
+          git \
+          glib-dev \
+          gvfs \
+          librsvg-dev \
+          libxcb-dev \
+          libxkbcommon-dev \
+          meson \
+          musl-fts-dev \
+          pango-dev \
+          patchelf \
+          ronn \
+          startup-notification-dev \
+          strace \
+          wget \
+          xcb-util-cursor-dev \
+          xcb-util-dev \
+          xcb-util-keysyms-dev \
+          xcb-util-wm-dev \
+          xcb-util-xrm-dev \
+          xkeyboard-config-dev
 
         chmod +x ./rofi-appimage.sh && ./rofi-appimage.sh
         mkdir dist
