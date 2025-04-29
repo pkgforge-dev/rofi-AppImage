@@ -30,7 +30,7 @@ echo "Categories=Utility;" >> ./rofi.desktop
 # ADD LIBRARIES
 wget "$LIB4BN" -O ./lib4bin
 chmod +x ./lib4bin
-./lib4bin -p -v -r -s \
+./lib4bin -p -v -k -s \
 	./bin/* \
 	/usr/lib/gio/modules/* \
 	/usr/lib/gdk-pixbuf-*/*/*/*
