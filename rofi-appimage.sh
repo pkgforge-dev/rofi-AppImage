@@ -32,7 +32,7 @@ wget "$LIB4BN" -O ./lib4bin
 chmod +x ./lib4bin
 ./lib4bin -p -v -r -s \
 	./bin/* \
-	/usr/lib/gio/* \
+	/usr/lib/gio/modules/* \
 	/usr/lib/gdk-pixbuf-*/*/*/*
 
 # We can't use the gdk variables here because that breaks child processes
