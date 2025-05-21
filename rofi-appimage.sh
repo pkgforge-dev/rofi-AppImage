@@ -76,7 +76,7 @@ chmod a+x ./AppRun
 ./sharun -g
 
 # don't set XKB_CONFIG_ROOT since it breaks child processes
-echo 'unset XKB_CONFIG_ROOT' >> ./.
+echo 'unset XKB_CONFIG_ROOT' >> ./.env
 
 export VERSION="$(./AppRun -v | awk 'FNR==1 {print $2; exit}')"
 echo "$VERSION" > ~/version
