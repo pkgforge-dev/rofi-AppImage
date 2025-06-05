@@ -87,6 +87,7 @@ wget "$APPIMAGETOOL" -O ./appimagetool
 chmod +x ./appimagetool
 
 echo "Generating AppImage..."
-./appimagetool -n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$APP"-"$VERSION"-anylinux-"$ARCH".AppImage
+URUNTIME_PRELOAD=1 ./appimagetool -n -u "$UPINFO" \
+	"$PWD"/AppDir "$PWD"/"$APP"-"$VERSION"-anylinux-"$ARCH".AppImage
 
 echo "All Done!"
