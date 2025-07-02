@@ -82,7 +82,7 @@ export VERSION="$(./AppDir/AppRun -v | awk '{print $2; exit}')"
 echo "$VERSION" > ~/version
 
 # MAKE APPIMAGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
-wget "$APPIMAGETOOL" -O ./appimagetool
+wget --retry-connrefused --tries=30 "$APPIMAGETOOL" -O ./appimagetool
 chmod +x ./appimagetool
 
 echo "Generating AppImage..."
