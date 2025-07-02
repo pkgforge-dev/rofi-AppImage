@@ -9,35 +9,40 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: "${{ matrix.name }} (${{ matrix.arch }})"
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - runs-on: ubuntu-latest
+            name: "Build AppImage"
+            arch: x86_64
+          - runs-on: ubuntu-24.04-arm
+            name: "Build AppImage"
+            arch: aarch64
     container: alpine:latest
     steps:
     - uses: actions/checkout@v4
 
     - name: Get dependencies
-      if: always()
       run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
 
     - name: Make AppImage
       run: chmod +x ./*-appimage.sh && ./*-appimage.sh
 
-    - name: Check version file
-      run: |
-       cat ~/version
-       echo "APP_VERSION=$(cat ~/version)" >> "${GITHUB_ENV}"
-    
     - name: Upload artifact
       uses: actions/upload-artifact@v4.6.2
       with:
-        name: AppImage
-        path: 'dist'
-        
+        name: AppImage-${{ matrix.arch }}
+        path: "dist"
+
     - name: Upload version file
       uses: actions/upload-artifact@v4.6.2
       with:
-       name: version
-       path: ~/version
-    
+        name: version
+        path: ~/version
+        overwrite: true
+
   release:
       needs: [build]
       permissions: write-all
@@ -46,7 +51,12 @@ jobs:
       steps:
         - uses: actions/download-artifact@v4.3.0
           with:
-            name: AppImage
+            name: AppImage-x86_64
+
+        - uses: actions/download-artifact@v4.3.0
+          with:
+            name: AppImage-aarch64
+
         - uses: actions/download-artifact@v4.3.0
           with:
             name: version
