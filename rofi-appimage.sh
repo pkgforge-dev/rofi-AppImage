@@ -29,10 +29,9 @@ mkdir ./AppDir && (
 	# ADD LIBRARIES
 	wget --retry-connrefused --tries=30 "$SHARUN" -O ./sharun-aio
 	chmod +x ./sharun-aio
-	xvfb-run -a -- \
-		./sharun-aio l -p -v -k -s \
-		./bin/*                    \
-		/usr/lib/gio/modules/*     \
+	./sharun-aio l -p -v -k -s \
+		./bin/*                \
+		/usr/lib/gio/modules/* \
 		/usr/lib/gdk-pixbuf-*/*/*/*
 	rm -f ./sharun-aio
 
