@@ -2,11 +2,13 @@
 
 set -ex
 
-ARCH="$(uname -m)"
+export ARCH="$(uname -m)"
+export APPIMAGE_EXTRACT_AND_RUN=1
+export URUNTIME_PRELOAD=1
+
 UPINFO="gh-releases-zsync|$(echo "$GITHUB_REPOSITORY" | tr '/' '|')|latest|*$ARCH.AppImage.zsync"
 SHARUN="https://github.com/VHSgunzo/sharun/releases/latest/download/sharun-$ARCH-aio"
-URUNTIME="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-$ARCH"
-URUNTIME_LITE="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-lite-$ARCH"
+APPIMAGETOOL="https://github.com/pkgforge-dev/appimagetool-uruntime/releases/download/continuous/appimagetool-$ARCH.AppImage"
 
 # CREATE DIRECTORIES
 mkdir ./AppDir && (
@@ -75,27 +77,16 @@ mkdir ./AppDir && (
 	./sharun -g
 )
 
-VERSION="$(./AppDir/AppRun -v | awk '{print $2; exit}')"
+export VERSION="$(./AppDir/AppRun -v | awk '{print $2; exit}')"
 echo "$VERSION" > ~/version
 
-# turn appdir into appimage
-wget --retry-connrefused --tries=30 "$URUNTIME"      -O  ./uruntime
-wget --retry-connrefused --tries=30 "$URUNTIME_LITE" -O  ./uruntime-lite
-chmod +x ./uruntime*
-
-# Add udpate info to runtime
-echo "Adding update information \"$UPINFO\" to runtime..."
-./uruntime-lite --appimage-addupdinfo "$UPINFO"
+# MAKE APPIMAGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
+wget --retry-connrefused --tries=30 "$APPIMAGETOOL" -O ./appimagetool
+chmod +x ./appimagetool
 
 echo "Generating AppImage..."
-./uruntime \
-	--appimage-mkdwarfs -f               \
-	--set-owner 0 --set-group 0          \
-	--no-history --no-create-timestamp   \
-	--compression zstd:level=22 -S26 -B8 \
-	--header uruntime-lite               \
-	-i ./AppDir                          \
-	-o ./rofi-"$VERSION"-anylinux-"$ARCH".AppImage
+./appimagetool -n -u "$UPINFO" \
+	"$PWD"/AppDir "$PWD"/rofi-"$VERSION"-anylinux-"$ARCH".AppImage
 
 mkdir -p ./dist
 mv -v ./*.AppImage* ./dist
