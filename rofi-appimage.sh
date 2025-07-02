@@ -9,6 +9,7 @@ export URUNTIME_PRELOAD=1
 UPINFO="gh-releases-zsync|$(echo "$GITHUB_REPOSITORY" | tr '/' '|')|latest|*$ARCH.AppImage.zsync"
 SHARUN="https://github.com/VHSgunzo/sharun/releases/latest/download/sharun-$ARCH-aio"
 APPIMAGETOOL="https://github.com/pkgforge-dev/appimagetool-uruntime/releases/download/continuous/appimagetool-$ARCH.AppImage"
+PATCH="$PWD"/hack.patch
 
 # CREATE DIRECTORIES
 mkdir ./AppDir && (
@@ -16,6 +17,8 @@ mkdir ./AppDir && (
 	# DOWNLOAD AND BUILD ROFI
 	git clone --depth 1 "https://github.com/davatorium/rofi.git" ./rofi && (
 		cd ./rofi
+		cp -v "$PATCH" ./hack.patch
+		patch -p1 -i ./hack.patch
 		meson --prefix /usr . build
 		meson compile -C build
 		meson install -C build --destdir "$(realpath ../)"
