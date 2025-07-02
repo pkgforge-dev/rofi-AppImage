@@ -2,7 +2,6 @@ name: Appimage
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
-
 on:
   schedule:
     - cron: "0 21 * * 0"
@@ -10,48 +9,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     container: alpine:latest
     steps:
     - uses: actions/checkout@v4
 
-    - name: build
+    - name: Get dependencies
       if: always()
-      run: |
-        apk add bash \
-          bash \
-          bison \
-          build-base \
-          cairo-dev \
-          check-dev \
-          coreutils \
-          cppcheck \
-          flex \
-          gdk-pixbuf-dev \
-          git \
-          glib-dev \
-          gvfs \
-          librsvg-dev \
-          libxcb-dev \
-          libxkbcommon-dev \
-          meson \
-          musl-fts-dev \
-          pango-dev \
-          patchelf \
-          ronn \
-          startup-notification-dev \
-          strace \
-          wget \
-          xcb-util-cursor-dev \
-          xcb-util-dev \
-          xcb-util-keysyms-dev \
-          xcb-util-wm-dev \
-          xcb-util-xrm-dev \
-          xkeyboard-config-dev
+      run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
 
-        chmod +x ./rofi-appimage.sh && ./rofi-appimage.sh
-        mkdir dist
-        mv *.AppImage* dist/
+    - name: Make AppImage
+      run: chmod +x ./*-appimage.sh && ./*-appimage.sh
 
     - name: Check version file
       run: |
