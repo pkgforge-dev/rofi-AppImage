@@ -3,14 +3,12 @@
 pacman -Syu --noconfirm \
 	base-devel           \
 	bison                \
-	build-base           \
 	cairo                \
 	check                \
 	cppcheck             \
 	flex                 \
 	gdk-pixbuf2          \
 	git                  \
-	glib                 \
 	gvfs                 \
 	librsvg              \
 	libxcb               \
@@ -19,7 +17,6 @@ pacman -Syu --noconfirm \
 	meson                \
 	pango                \
 	patch                \
-	ronn                 \
 	startup-notification \
 	wget                 \
 	xcb-util-cursor      \
