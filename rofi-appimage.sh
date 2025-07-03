@@ -15,8 +15,7 @@ mkdir ./AppDir && (
 	# DOWNLOAD AND BUILD ROFI
 	git clone --depth 1 "https://github.com/davatorium/rofi.git" ./rofi && (
 		cd ./rofi
-		cp -v "$PATCH" ./hack.patch
-		patch -p1 -i ./hack.patch
+		patch -p1 -i "$PATCH"
 		meson --prefix /usr . build
 		meson compile -C build
 		meson install -C build --destdir "$(realpath ../)"
