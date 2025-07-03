@@ -100,7 +100,7 @@ chmod +x ./pelf
 echo "Generating [dwfs]AppBundle..."
 ./pelf \
 	--compression "-C zstd:level=22 -S26 -B8"      \
-	--appbundle-id="alacritty-$VERSION"            \
+	--appbundle-id="rofi-$VERSION"                 \
 	--appimage-compat --disable-use-random-workdir \
 	--add-updinfo "$UPINFO"                        \
 	--add-appdir ./AppDir                          \
