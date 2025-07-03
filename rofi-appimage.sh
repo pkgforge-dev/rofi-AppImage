@@ -33,9 +33,9 @@ mkdir ./AppDir && (
 	wget --retry-connrefused --tries=30 "$SHARUN" -O ./sharun-aio
 	chmod +x ./sharun-aio
 	./sharun-aio l -p -v -k -s \
-		./bin/*                \
-		/usr/lib/gio/modules/* \
-		/usr/lib/gdk-pixbuf-*/*/*/*
+		./bin/*                     \
+		/usr/lib/gdk-pixbuf-*/*/*/* \
+		/usr/lib/gio/modules/libgvfsdbus.so
 	rm -rf ./sharun-aio ./rofi ./usr
 	
 	# AppRun
