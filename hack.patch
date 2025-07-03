@@ -1,24 +1,24 @@
 diff --git a/source/rofi.c b/source/rofi.c
-index 37ad16f..c92df99 100644
+index 37ad16f0..16a879db 100644
 --- a/source/rofi.c
 +++ b/source/rofi.c
-@@ -76,6 +76,19 @@
+@@ -1331,6 +1331,19 @@ int main(int argc, char *argv[]) {
  
- #endif
+   g_idle_add(startup, NULL);
  
-+/** terrible hack */
-+static void __attribute__((constructor))  rofi_unset_appdir_env(void)
-+{
-+  if ( g_getenv("APPDIR") ) {
-+    g_unsetenv("APPDIR");
-+    g_unsetenv("GIO_MODULE_DIR");
-+    g_unsetenv("GSETTINGS_SCHEMA_DIR");
-+    g_unsetenv("GDK_PIXBUF_MODULEDIR");
-+    g_unsetenv("GDK_PIXBUF_MODULE_FILE");
-+    g_unsetenv("GTK_PATH");
++  /** terrible hack */
++  static void __attribute__((constructor))  rofi_unset_appdir_env(void)
++  {
++    if ( g_getenv("APPDIR") ) {
++      g_unsetenv("APPDIR");
++      g_unsetenv("GIO_MODULE_DIR");
++      g_unsetenv("GSETTINGS_SCHEMA_DIR");
++      g_unsetenv("GDK_PIXBUF_MODULEDIR");
++      g_unsetenv("GDK_PIXBUF_MODULE_FILE");
++      g_unsetenv("GTK_PATH");
++    }
 +  }
-+}
 +
- /** Location of pidfile for this instance. */
- char *pidfile = NULL;
- /** Location of Cache directory. */
+   // Start mainloop.
+   g_main_loop_run(main_loop);
+   teardown(pfd);
