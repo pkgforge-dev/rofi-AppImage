@@ -38,7 +38,8 @@ pacman -Syu --noconfirm \
 	xcb-util-keysyms     \
 	xcb-util-wm          \
 	xcb-util-xrm         \
-	xkeyboard-config
+	xkeyboard-config     \
+	zsync
 
 
 echo "Installing debloated pckages..."
