@@ -69,7 +69,7 @@ mkdir ./AppDir && (
 	./sharun -g
 )
 
-export VERSION="$(./AppDir/AppRun -v | awk '{print $2; exit}')"
+export VERSION="$(./AppDir/AppRun -v | awk -F'[- ]' '{print $2; exit})"
 echo "$VERSION" > ~/version
 
 # MAKE APPIMAGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
