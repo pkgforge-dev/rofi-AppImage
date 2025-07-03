@@ -1,24 +1,33 @@
 diff --git a/source/rofi.c b/source/rofi.c
-index 37ad16f0..16a879db 100644
+index 37ad16f0..58fca78a 100644
 --- a/source/rofi.c
 +++ b/source/rofi.c
-@@ -1331,6 +1331,19 @@ int main(int argc, char *argv[]) {
+@@ -76,6 +76,19 @@
  
-   g_idle_add(startup, NULL);
+ #endif
  
-+  /** terrible hack */
-+  static void __attribute__((constructor))  rofi_unset_appdir_env(void)
-+  {
-+    if ( g_getenv("APPDIR") ) {
-+      g_unsetenv("APPDIR");
-+      g_unsetenv("GIO_MODULE_DIR");
-+      g_unsetenv("GSETTINGS_SCHEMA_DIR");
-+      g_unsetenv("GDK_PIXBUF_MODULEDIR");
-+      g_unsetenv("GDK_PIXBUF_MODULE_FILE");
-+      g_unsetenv("GTK_PATH");
-+    }
++/** Terrible hack */
++static void terrible_hack_for_appimage(void)
++{
++  if ( g_getenv("APPDIR") ) {
++    g_unsetenv("APPDIR");
++    g_unsetenv("GIO_MODULE_DIR");
++    g_unsetenv("GSETTINGS_SCHEMA_DIR");
++    g_unsetenv("GDK_PIXBUF_MODULEDIR");
++    g_unsetenv("GDK_PIXBUF_MODULE_FILE");
++    g_unsetenv("GTK_PATH");
 +  }
++}
 +
-   // Start mainloop.
-   g_main_loop_run(main_loop);
-   teardown(pfd);
+ /** Location of pidfile for this instance. */
+ char *pidfile = NULL;
+ /** Location of Cache directory. */
+@@ -1299,6 +1312,8 @@ int main(int argc, char *argv[]) {
+   rofi_icon_fetcher_init();
+   TICK_N("Icon fetcher initialize");
+ 
++  terrible_hack_for_appimage();
++
+   gboolean kill_running = FALSE;
+   if (find_arg("-replace") >= 0) {
+     kill_running = TRUE;
