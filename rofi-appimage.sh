@@ -36,18 +36,7 @@ mkdir ./AppDir && (
 		./bin/*                \
 		/usr/lib/gio/modules/* \
 		/usr/lib/gdk-pixbuf-*/*/*/*
-	rm -f ./sharun-aio
-
-	# We can't use the gdk variables here because that breaks child processes
-	#git clone --depth 1 "https://github.com/fritzw/ld-preload-open" && (
-	#	cd ./ld-preload-open
-	#	make all
-	#	mv ./path-mapping.so ../lib
-	#)
-	#mv -v ./shared/lib/gdk-pixbuf-* ./
-	#echo 'path-mapping.so' >./.preload
-	#echo 'PATH_MAPPING=/usr/lib/gdk-pixbuf-2.0:${SHARUN_DIR}/gdk-pixbuf-2.0' >> ./.env
-	rm -rf ./rofi ./usr ./ld-preload-open
+	rm -rf ./sharun-aio ./rofi ./usr
 	
 	# AppRun
 	cat > ./AppRun <<-'EOF'
