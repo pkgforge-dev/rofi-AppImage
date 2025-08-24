@@ -28,11 +28,11 @@ for hook in "$CURRENTDIR"/bin/*.hook; do
 done
 
 # Check if ARGV0 matches any bundled binary, fallback to $1, then main bin
-if [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
-	exec "$CURRENTDIR"/bin/"$BIN" "$@"
-elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
+if [ -f "$CURRENTDIR"/bin/"$1" ]; then
 	BIN="$1"
 	shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
 	exec "$CURRENTDIR"/bin/"$BIN" "$@"
 else
 	exec "$CURRENTDIR"/bin/rofi "$@"
