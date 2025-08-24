@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+BIN="${ARGV0:-$0}"
+BIN="${BIN##*/}"
+DATADIR="${XDG_DATA_HOME:-$HOME/.local/share}"
+unset ARGV0
+
+export XDG_DATA_DIRS="$DATADIR:$XDG_DATA_DIRS:/usr/local/share:/usr/share"
+export PATH="$CURRENTDIR/bin:$PATH"
+
+if [ ! -d "$DATADIR"/rofi/themes ]; then
+	mkdir -p "$DATADIR"/rofi
+	cp -r "$CURRENTDIR"/share/rofi/themes "$DATADIR"/rofi/themes
+fi
+
+# additional scripts can be placed in the top level bin dir
+# those with a name that ends up .hook will be executed in teh current shell
+# while those that end with bg.hook will be executed in the background
+for hook in "$CURRENTDIR"/bin/*.hook; do
+	[ -x "$hook" ] || continue
+	case "$hook" in
+		*.bg.hook) >&2 echo "exec bg hook: $hook"; "$hook" &;;
+		*.hook)    >&2 echo "exec hook: $hook";    "$hook"  ;;
+	esac
+done
+
+# Check if ARGV0 matches any bundled binary, fallback to $1, then main bin
+if [ -f "$CURRENTDIR"/bin/"$BIN" ]; then
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+elif [ -f "$CURRENTDIR"/bin/"$1" ]; then
+	BIN="$1"
+	shift
+	exec "$CURRENTDIR"/bin/"$BIN" "$@"
+else
+	exec "$CURRENTDIR"/bin/rofi "$@"
+fi
