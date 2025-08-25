@@ -4,7 +4,7 @@ concurrency:
   cancel-in-progress: true
 on:
   schedule:
-    - cron: "0 21 * * 0"
+    - cron: "0 7 1/14 * *"
   workflow_dispatch:
 
 jobs:
@@ -22,61 +22,46 @@ jobs:
             arch: aarch64
     container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Get dependencies
-      run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
+      - name: Get dependencies
+        run: chmod +x ./get-dependencies.sh && ./get-dependencies.sh
 
-    - name: Make AppImage
-      run: chmod +x ./*-appimage.sh && ./*-appimage.sh
+      - name: Make AppImage
+        run: chmod +x ./*-appimage.sh && ./*-appimage.sh
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.6.2
-      with:
-        name: AppImage-${{ matrix.arch }}
-        path: "dist"
-
-    - name: Upload version file
-      uses: actions/upload-artifact@v4.6.2
-      with:
-        name: version
-        path: ~/version
-        overwrite: true
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: AppImage-${{ matrix.arch }}
+          path: dist
 
   release:
-      if: ${{ github.ref_name == 'main' }}
-      needs: [build]
-      permissions: write-all
-      runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'main' }}
+    needs: [build]
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4.3.0
+        with:
+          pattern: AppImage-*
+          merge-multiple: true
 
-      steps:
-        - uses: actions/download-artifact@v4.3.0
-          with:
-            name: AppImage-x86_64
+      - name: Read version and Get date
+        run: |
+          echo "VERSION=$(cat version)" >> "${GITHUB_ENV}"
+          echo "DATE=$(date +'%Y-%m-%d_%s')" >> "$GITHUB_ENV"
 
-        - uses: actions/download-artifact@v4.3.0
-          with:
-            name: AppImage-aarch64
-
-        - uses: actions/download-artifact@v4.3.0
-          with:
-            name: version
-
-        - name: Read version and Get date
-          run: |
-            echo "VERSION=$(cat version)" >> "${GITHUB_ENV}"
-            echo "DATE=$(date +'%Y-%m-%d_%s')" >> "$GITHUB_ENV"
-
-        - name: Release Artifacts
-          uses: softprops/action-gh-release@v2.2.2
-          with:
-            name: "rofi: ${{ env.VERSION }}"
-            tag_name: "${{ env.VERSION }}@${{ env.DATE }}"
-            prerelease: false
-            draft: false
-            generate_release_notes: false
-            fail_on_unmatched_files: false
-            make_latest: true
-            files: |
-              *.AppImage*
-              *.AppBundle*
+      - name: Release Artifacts
+        uses: softprops/action-gh-release@v2.2.2
+        with:
+          name: "rofi: ${{ env.VERSION }}"
+          tag_name: "${{ env.VERSION }}@${{ env.DATE }}"
+          prerelease: false
+          draft: false
+          generate_release_notes: false
+          fail_on_unmatched_files: false
+          make_latest: true
+          files: |
+            *.AppImage*
+            *.AppBundle*
