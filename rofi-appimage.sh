@@ -4,9 +4,8 @@ set -eux
 
 ARCH="$(uname -m)"
 VERSION="$(cat ~/version)"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/execv-hook/useful-tools/quick-sharun.sh"
+SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
-UPDATER="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/self-updater.bg.hook"
 
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export OUTNAME=rofi-"$VERSION"-anylinux-"$ARCH".AppImage
@@ -14,12 +13,13 @@ export DESKTOP=/usr/share/applications/rofi.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/rofi.svg
 export URUNTIME_PRELOAD=1 # really needed here
 export EXEC_WRAPPER=1 # needed here since this will launch other processes
+export LOCALE_FIX=1 # crashes when it cannot switch to host locale
 
 # ADD LIBRARIES
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun /usr/bin/rofi*
-echo 'unset ARGV0' > ./AppDir/.env
+echo 'unset ARGV0' >> ./AppDir/.env
 
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
@@ -46,5 +46,6 @@ zsyncmake ./*.AppBundle -u ./*.AppBundle
 mkdir -p ./dist
 mv -v ./*.AppImage*  ./dist
 mv -v ./*.AppBundle* ./dist
+mv -v ~/version      ./dist
 
 echo "All Done!"
