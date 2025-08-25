@@ -2,7 +2,6 @@
 
 set -ex
 EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
-PATCH="$PWD"/locale-fix.patch
 
 echo "Installing build dependencies..."
 echo "---------------------------------------------------------------"
@@ -43,7 +42,6 @@ echo "Building rofi..."
 echo "---------------------------------------------------------------"
 git clone --depth 1 "https://github.com/davatorium/rofi.git" ./rofi && (
 	cd ./rofi
-	patch -p1 -i "$PATCH"
 	meson --prefix /usr . build
 	meson compile -C build
 	meson install -C build
