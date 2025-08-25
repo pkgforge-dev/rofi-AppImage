@@ -4,7 +4,7 @@ set -eux
 
 ARCH="$(uname -m)"
 VERSION="$(cat ~/version)"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/execv-hook/useful-tools/quick-sharun.sh"
+SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
 URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
@@ -17,7 +17,6 @@ export LOCALE_FIX=1 # crashes when it cannot switch to host locale
 
 # ADD LIBRARIES
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
-sed -i 's|set -e|set -ex|' ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun /usr/bin/rofi*
 echo 'unset ARGV0' > ./AppDir/.env
