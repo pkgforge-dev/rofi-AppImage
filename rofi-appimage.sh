@@ -19,7 +19,7 @@ export LOCALE_FIX=1 # crashes when it cannot switch to host locale
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun /usr/bin/rofi*
-echo 'unset ARGV0' > ./AppDir/.env
+echo 'unset ARGV0' >> ./AppDir/.env
 
 # MAKE APPIMAGE WITH URUNTIME
 wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
