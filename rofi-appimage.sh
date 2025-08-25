@@ -17,6 +17,7 @@ export LOCALE_FIX=1 # crashes when it cannot switch to host locale
 
 # ADD LIBRARIES
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
+sed -i 's|set -e|set -ex|' ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun /usr/bin/rofi*
 echo 'unset ARGV0' > ./AppDir/.env
