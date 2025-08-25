@@ -14,6 +14,7 @@ export DESKTOP=/usr/share/applications/rofi.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/rofi.svg
 export URUNTIME_PRELOAD=1 # really needed here
 export EXEC_WRAPPER=1 # needed here since this will launch other processes
+export LOCALE_FIX=1 # crashes when it cannot switch to host locale
 
 # ADD LIBRARIES
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
