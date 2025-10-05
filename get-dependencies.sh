@@ -30,6 +30,7 @@ pacman -Syu --noconfirm \
 	xcb-util-wm          \
 	xcb-util-xrm         \
 	xkeyboard-config     \
+	wayland-protocols    \
 	zsync
 
 echo "Installing debloated packages..."
