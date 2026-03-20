@@ -1,0 +1,14 @@
+#!/bin/false
+
+_datadir=${XDG_DATA_HOME:-~/.local/share}
+_rofi_themes_dst=$_datadir/rofi/themes
+_rofi_themes_src=$APPDIR/share/rofi/themes
+XDG_DATA_DIRS=$_datadir:$XDG_DATA_DIRS:/usr/local/share:/usr/share
+export XDG_DATA_DIRS
+
+if [ ! -d "$_rofi_themes_dst" ] && [ -d "$_rofi_themes_src" ]; then
+	mkdir -p "$_rofi_themes_dst"
+	cp -r "$_rofi_themes_src"/. "$_rofi_themes_dst"
+	>&2 echo "Copied rofi themes to $_rofi_themes_dst"
+fi
+

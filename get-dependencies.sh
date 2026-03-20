@@ -1,27 +1,17 @@
 #!/bin/sh
 
-set -ex
-EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
+set -eu
 
-echo "Installing build dependencies..."
+ARCH=$(uname -m)
+
+echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-	base-devel           \
-	bison                \
-	cairo                \
 	check                \
 	cppcheck             \
-	flex                 \
-	gdk-pixbuf2          \
-	git                  \
 	gvfs                 \
-	librsvg              \
-	libxcb               \
-	libxkbcommon         \
-	libxkbcommon-x11     \
 	meson                \
 	pango                \
-	patch                \
 	startup-notification \
 	wget                 \
 	xcb-util-cursor      \
@@ -30,14 +20,11 @@ pacman -Syu --noconfirm \
 	xcb-util-wm          \
 	xcb-util-xrm         \
 	xkeyboard-config     \
-	wayland-protocols    \
-	zsync
+	wayland-protocols
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
-chmod +x ./get-debloated-pkgs.sh
-./get-debloated-pkgs.sh --add-common --prefer-nano
+get-debloated-pkgs --add-common --prefer-nano
 
 echo "Building rofi..."
 echo "---------------------------------------------------------------"
