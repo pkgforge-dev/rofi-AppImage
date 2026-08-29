@@ -30,7 +30,7 @@ echo "Building rofi..."
 echo "---------------------------------------------------------------"
 git clone --depth 1 "https://github.com/davatorium/rofi.git" ./rofi && (
 	cd ./rofi
-	meson -Dwayland=enabled -Dxcb=enabled --prefix /usr . build
+	meson --buildtype=release --prefix /usr -Dwayland=enabled -Dxcb=enabled ./ ./build
 	meson compile -C build
 	meson install -C build
 )
